@@ -36,8 +36,8 @@ $(function() {
          it('have URLs and they are defined', function(){
           console.log(allFeeds.length);
             for(var i = 0; i < allFeeds.length; i++){
-                expect(allFeeds[i].url).toBeDefined());
-                expect(allFeeds[i].url).toBeTruthy());
+                expect(allFeeds[i].url).toBeDefined();
+                expect(allFeeds[i].url).toBeTruthy();
             }
 
 
@@ -76,13 +76,13 @@ $(function() {
           it('is displayed when the menu icon is clicked',function(){
                /* simulate a click */
                 menuIcon.click();
-                 expect(hiddenClass).not.toBeTruthy();
+                 expect($('body').hasClass( menuIcon)).toBe(false);;
             });
 
            it('is hidden when the menu icon is clicked again ',function(){
            /* simulate a second click */
                menuIcon.click();
-                 expect(hiddenClass).toBeTruthy();
+                 expect($('body').hasClass(hiddenClass)).toBe(true);;
             });
           });
     /* TODO: Write a new test suite named "Initial Entries" */
@@ -101,7 +101,7 @@ $(function() {
               });
 
               it('loadFeed Entries ', function() {
-                  expect($('.entry').length).not.toBe(0);
+                  expect($('.feed.entry').length).not.toBe(0);
               });
           });
     /* TODO: Write a new test suite named "New Feed Selection"
@@ -110,25 +110,40 @@ $(function() {
          * by the loadFeed function that the content actually changes.
          * Remember, loadFeed() is asynchronous.
          */
-  describe('New Feed Selection', function(){
+    describe('New Feed Selection', function() {
+             var firstLoad;
+             var secondLoad;
 
-    beforeEach(function(done){
-        $('.feed').empty()
+             /* Runs LoadFeed asynchronously because all data needs to be
+              * obtained from Google API before the test can be run.
 
-        loadFeed(0, function() {
-            entries_before = $('.feed').find("h2").text();
+            */
+             beforeEach(function(done) {
+               loadFeed(0, function() {
+                 /* Gets the content of the initial feed */
+                 firstLoad = $('.feed').html();
+                 loadFeed(1, function() {
+                   /* Gets the contents of the second feed load */
+                   secondLoad = $('.feed').html();
+                   done();
+                 });
+               });
+             });
 
-
-        loadFeed(1, function() {
-            entries_after = $('.feed').find("h2").text();
-            done();
-        });
-        });
-    });
-
-    it('changes the content', function(done){
-        expect(entries_before).not.toEqual(entries_after)
-        done();
-    });
-});
-}());
+             /* A test that ensures when a new feed is loaded
+              * by the loadFeed function that the content actually changes.
+              */
+             it('actually changes the content', function(done) {
+               /* Checks the feed loads to make sure both actually have content
+                * to be compared against
+                */
+               expect(firstLoad).not.toBe(undefined);
+               expect(secondLoad).not.toBe(undefined);
+               /* Checks the first and second feed uploaded and compares to see if
+                * different, or updated compared to the previous feed
+                */
+               expect(firstLoad == secondLoad).toBe(false);
+               done();
+             });
+           });
+       }());
