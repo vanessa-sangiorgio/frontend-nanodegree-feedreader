@@ -36,8 +36,8 @@ $(function() {
          it('have URLs and they are defined', function(){
           console.log(allFeeds.length);
             for(var i = 0; i < allFeeds.length; i++){
-                expect(allFeeds[i].url.toBeDefined);
-                expect(allFeeds[i].url.toBeTruthy);
+                expect(allFeeds[i].url).toBeDefined());
+                expect(allFeeds[i].url).toBeTruthy());
             }
 
 
@@ -47,8 +47,8 @@ $(function() {
 
          it('have names and they are defined', function(){
               for(var i = 0; i < allFeeds.length; i++){
-                   expect(allFeeds[i].name.toBeDefined);
-                   expect(allFeeds[i].name.toBeTruthy);
+                   expect(allFeeds[i].name).toBeDefined();
+                   expect(allFeeds[i].name).toBeTruthy();
               }
             })
     });
@@ -63,7 +63,7 @@ $(function() {
          */
          var feedBody = document.body;
          it('hidden by default', function() {
-           expect(feedBody.className).toBe('menu-hidden');
+           expect(feedBody.className).toContain('menu-hidden');
        });
 
          /* TODO: Write a test that ensures the menu changes
@@ -71,16 +71,18 @@ $(function() {
           * should have two expectations: does the menu display when
           * clicked and does it hide when clicked again.
           */
+          var menuIcon = $('.menu-icon-link');
+          var hiddenClass = $('menu-hidden')
           it('is displayed when the menu icon is clicked',function(){
                /* simulate a click */
-                $menuIcon.trigger("click");
-                 expect($hiddenClass).not.toBeTruthy();
+                menuIcon.click();
+                 expect(hiddenClass).not.toBeTruthy();
             });
 
            it('is hidden when the menu icon is clicked again ',function(){
            /* simulate a second click */
-               $menuIcon.trigger("click");
-                 expect($hiddenClass).toBeTruthy();
+               menuIcon.click();
+                 expect(hiddenClass).toBeTruthy();
             });
           });
     /* TODO: Write a new test suite named "Initial Entries" */
@@ -99,7 +101,7 @@ $(function() {
               });
 
               it('loadFeed Entries ', function() {
-                  expect($('.entriesLen').length).not.toBe(0);
+                  expect($('.entry').length).not.toBe(0);
               });
           });
     /* TODO: Write a new test suite named "New Feed Selection"
@@ -115,11 +117,12 @@ $(function() {
 
         loadFeed(0, function() {
             entries_before = $('.feed').find("h2").text();
-        });
+
 
         loadFeed(1, function() {
             entries_after = $('.feed').find("h2").text();
             done();
+        });
         });
     });
 
