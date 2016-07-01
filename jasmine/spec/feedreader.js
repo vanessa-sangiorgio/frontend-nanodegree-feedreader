@@ -72,11 +72,11 @@ $(function() {
           * clicked and does it hide when clicked again.
           */
           var menuIcon = $('.menu-icon-link');
-          var hiddenClass = $('menu-hidden')
+          var hiddenClass = 'menu-hidden';
           it('is displayed when the menu icon is clicked',function(){
                /* simulate a click */
                 menuIcon.click();
-                 expect($('body').hasClass( menuIcon)).toBe(false);;
+                 expect($('body').hasClass(hiddenClass)).toBe(false);;
             });
 
            it('is hidden when the menu icon is clicked again ',function(){
@@ -101,7 +101,7 @@ $(function() {
               });
 
               it('loadFeed Entries ', function() {
-                  expect($('.feed.entry').length).not.toBe(0);
+                  expect($('.feed .entry').length).not.toBe(0);
               });
           });
     /* TODO: Write a new test suite named "New Feed Selection"
